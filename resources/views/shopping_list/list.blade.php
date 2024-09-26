@@ -7,6 +7,7 @@
 @section('contents')
 <h1>「買うもの」の登録(未実装)</h1>
         <form>
+            @csrf
             「買うもの」名:<input type="text" name="goods"/><br>
             <button>「買うもの」を登録する</button>
         </form>
@@ -50,6 +51,6 @@
         <br>
         <hr>
         <menu label="リンク">
-        <a href="./index.html">ログアウト(未実装)</a><br>
+        <a href="/logout">ログアウト</a><br>
         </menu>
 @endsection
