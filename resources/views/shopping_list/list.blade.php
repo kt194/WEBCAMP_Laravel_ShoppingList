@@ -27,31 +27,16 @@
         <tr>
             <th>登録日
             <th>「買うもの」名
+        </tr>
+    @foreach($list as $item)
         <tr>
-            <td>2022/01/01
-            <td>豚肉
+            <td>{{ $item->created_at->format('y/m/d'); }}</td>
+            <td>{{ $item->name }}</td>
             <td><form action="./top.html"><button>完了</button></form>
             <td></td>
             <td><form action="./top.html"><button>解除</button></form>
-        <tr>
-            <td>2022/01/01
-            <td>鳥肉
-            <td><form action="./top.html"><button>完了</button></form>
-            <td></td>
-            <td><form action="./top.html"><button>解除</button></form>
-        <tr>
-            <td>2022/01/01
-            <td>牛肉
-            <td><form action="./top.html"><button>完了</button></form>
-            <td></td>
-            <td><form action="./top.html"><button>解除</button></form>
-        <tr>
-            <td>2022/01/01
-            <td>羊肉
-            <td><form action="./top.html"><button>完了</button></form>
-            <td></td>
-            <td><form action="./top.html"><button>解除</button></form>
-
+        </tr>
+    @endforeach
         </table>
         <!-- ページネーション -->
         現在 1 ページ目<br>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Shopping_listRegisterPostRequest;
-use App\Models\Shopping_list as Shopping_listModel;
+use App\Models\Shopping_list as ShoppingListModel;
 
 class ShoppingListController extends Controller
 {
@@ -14,7 +14,18 @@ class ShoppingListController extends Controller
      */
     public function list()
     {
-        return view('shopping_list.list');
+        // 一覧の取得
+        $list = ShoppingListModel::where('user_id', Auth::id())
+                                ->orderBy('name', 'ASC')
+                                ->orderBy('created_at')
+                                ->get();
+        /*
+        $sql = ShoppingListModel::where('user_id', Auth::id())
+                                ->orderBy('name')
+                                ->toSql();
+        */
+        //echo "<pre>\n"; var_dump($sql, $list); exit;
+        return view('shopping_list.list', ['list' => $list]);
     }
     
     /**
@@ -34,7 +45,7 @@ class ShoppingListController extends Controller
         
         // テーブルへのINSERT
         try {
-            $r = Shopping_listModel::create($datum);
+            $r = ShoppingListModel::create($datum);
         } catch(\Throwable $e) {
             // XXX 本当はログに書く等の処理をする。今回は一端「出力する」だけ
             echo $e->getMessage();
