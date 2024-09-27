@@ -6,8 +6,17 @@
 {{-- メインコンテンツ --}}
 @section('contents')
     <h1>「買うもの」の登録</h1>
-         @if (session('front.shopping_list_register_success') == true)
+        @if (session('front.shopping_list_register_success') == true)
             「買うもの」を登録しました！！<br>
+        @endif
+        @if (session('front.shopping_list_delete_success') == true)
+            「買うもの」を削除しました！！<br>
+        @endif
+        @if (session('front.shopping_list_completed_success') == true)
+            「買うもの」を完了にしました！！<br>
+        @endif
+        @if (session('front.shopping_list_completed_failure') == true)
+            「買うもの」の完了に失敗しました....<br>
         @endif
         @if ($errors->any())
             <div>
@@ -32,9 +41,19 @@
         <tr>
             <td>{{ $item->created_at->format('y/m/d'); }}</td>
             <td>{{ $item->name }}</td>
-            <td><form action="./top.html"><button>完了</button></form>
-            <td></td>
-            <td><form action="./top.html"><button>解除</button></form>
+            <td>
+                <form action="{{ route('complete', [ 'shopping_list_id' => $item->id]) }}" method="post">
+                    @csrf
+                    <button type="submit" onclick='return confirm("この「買うもの」を「完了」にします。よろしいですか？");' >完了</button>
+                </form>
+            </td>
+            <td>
+                <form action="{{ route('delete', ['shopping_list_id' => $item->id]) }}" method="post">
+                    @csrf
+                    @method("DELETE")
+                    <button type="submit" onclick='return confirm("この「買うもの」を「削除」にします。よろしいですか？");'>削除</button>
+                </form>
+            </td>
         </tr>
     @endforeach
         </table>
