@@ -14,11 +14,15 @@ class ShoppingListController extends Controller
      */
     public function list()
     {
+        // 1ページあたりの表示アイテム数を設定
+        $per_page = 3;
+        
         // 一覧の取得
         $list = ShoppingListModel::where('user_id', Auth::id())
                                 ->orderBy('name', 'ASC')
                                 ->orderBy('created_at')
-                                ->get();
+                                ->paginate($per_page);
+                                //->get();
         /*
         $sql = ShoppingListModel::where('user_id', Auth::id())
                                 ->orderBy('name')
@@ -52,7 +56,7 @@ class ShoppingListController extends Controller
             exit;
         }
         
-        // 登録成功
+        // 「買い物」登録成功
         $request->session()->flash('front.shopping_list_register_success', true);
         
         // リダイレクト
