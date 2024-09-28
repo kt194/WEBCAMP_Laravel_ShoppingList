@@ -1,11 +1,11 @@
 @extends('layout')
 
 {{-- タイトル --}}
-@section('title')(ユーザー登録)@endsection
+@section('title')(ユーザ登録)@endsection
 
 {{-- メインコンテンツ --}}
 @section('contents')
-        <h1>ユーザー登録</h1>
+        <h1>ユーザ登録</h1>
             @if ($errors->any())
                 <div>
                 @foreach ($errors->all() as $error)
