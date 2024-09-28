@@ -39,7 +39,10 @@ class AuthController extends Controller
                    ->withErrors(['auth' => 'ログインIDかパスワードに誤りがあります。',]) // エラーメッセージの出力
                    ;
         }
-
+        
+        // 一般ユーザーのセッションをクリア
+        //Auth::guard('web')->logout();
+        //$request->session()->invalidate();
         $request->session()->regenerate();
         return redirect()->intended('/admin/top');
     } 

@@ -6,6 +6,8 @@ use App\Http\Controllers\ShoppingListController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\CompletedShoppingListController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +23,11 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 // 買い物リスト
 Route::get('/', [AuthController::class, 'index'])->name('front.index');
 Route::post('/login', [AuthController::class, 'login']);
-
+// 会員登録
+Route::prefix('/user')->group(function () {
+    Route::get('/register', [UserController::class, 'index'])->name('user.register');
+    Route::post('/register', [UserController::class, 'register'])->name('user.register.post');
+});
 // 認可処理
 Route::middleware(['auth'])->group(function() {
     Route::prefix('/shopping_list')->group(function() {
@@ -30,6 +36,8 @@ Route::middleware(['auth'])->group(function() {
         Route::delete('/delete/{shopping_list_id}', [ShoppingListController::class, 'delete'])->whereNumber('shopping_list_id')->name('delete');
         Route::post('/complete/{shopping_list_id}', [ShoppingListController::class, 'complete'])->whereNumber('shopping_list_id')->name('complete');
     });
+    // 購入済み「買うもの」一覧
+    Route::get('/completed_shopping_list/list', [CompletedShoppingListController::class, 'list'])->name('front.complete');
     // ログアウト
     Route::get('/logout', [AuthController::class, 'logout']);
 });

@@ -1,0 +1,73 @@
+<?php
+declare(strict_types=1);
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CompletedShoppingList as CompletedShoppingListModel;
+
+class CompletedShoppingListController extends Controller
+{
+    public function list()
+    {
+        // 1Page辺りの表示アイテム数を設定
+        $per_page = 2;
+
+        // 一覧の取得
+        $list = $this->getListBuilder()
+                     ->paginate($per_page);
+                        // ->get();
+        /*
+        $sql =  $this->getListBuilder()
+            ->toSql();
+        //echo "<pre>\n"; var_dump($sql, $list); exit;
+        var_dump($sql);
+        */
+
+        return view('shopping_list.completed_list', ['list' => $list]);
+    }
+
+    /**
+     * 「単一のタスク」Modelの取得
+     */
+    protected function getShoppingListModel($shopping_list_id)
+    {
+        // task_idのレコードを取得する
+        $list = CompletedShoppingListModel::find($shopping_list_id);
+        if ($list === null) {
+            return null;
+        }
+        // 本人以外のタスクならNGとする
+        if ($list->user_id !== Auth::id()) {
+            return null;
+        }
+
+        return $list;
+    }
+
+    /**
+     * 「単一のタスク」の表示
+     */
+    protected function singleTaskRender($shopping_list_id, $template_name)
+    {
+        // task_idのレコードを取得する
+        $list = $this->getTaskModel($shopping_list_id);
+        if ($list === null) {
+            return redirect('/shopping_list/list');
+        }
+
+        // テンプレートに「取得したレコード」の情報を渡す
+        return view($template_name, ['list' => $list]);
+    }
+    
+    
+    /**
+     * 一覧用の Illuminate\Database\Eloquent\Builder インスタンスの取得
+     */
+    protected function getListBuilder()
+    {
+        return CompletedShoppingListModel::where('user_id', Auth::id())
+                     ->orderBy('created_at')
+                     ->orderBy('name');
+    }
+}

@@ -31,7 +31,7 @@
             <button>「買うもの」を登録する</button>
         </form>
     <h1>「買うもの」一覧</h1>
-        <a href="./top.html">購入済み「買うもの」一覧</a><br>
+        <a href="{{ route('front.complete') }}">購入済み「買うもの」一覧</a><br>
         <table border="1">
         <tr>
             <th>登録日
@@ -39,7 +39,7 @@
         </tr>
     @foreach($list as $item)
         <tr>
-            <td>{{ $item->created_at->format('y/m/d'); }}</td>
+            <td>{{ $item->created_at->format('Y/m/d'); }}</td>
             <td>{{ $item->name }}</td>
             <td>
                 <form action="{{ route('complete', [ 'shopping_list_id' => $item->id]) }}" method="post">
